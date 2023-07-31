@@ -12,21 +12,30 @@ resource "aws_s3_bucket_website_configuration" "aws-cloudfront-s3-static-web" {
   }
 }
 
-data "aws_iam_policy_document" "aws-cloudfront-s3-static-web_cdn_policy" {
-  statement {
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.aws-cloudfront-s3-static-web.arn}/*"]
-
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.aws-cloudfront-s3-static-web.iam_arn]
-    }
+resource "aws_s3_bucket_ownership_controls" "aws-cloudfront-s3-static-web" {
+  bucket = aws_s3_bucket.aws-cloudfront-s3-static-web.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_policy" "aws-cloudfront-s3-static-web_cdn_policy" {
+resource "aws_s3_bucket_public_access_block" "aws-cloudfront-s3-static-web" {
   bucket = aws_s3_bucket.aws-cloudfront-s3-static-web.id
-  policy = data.aws_iam_policy_document.aws-cloudfront-s3-static-web_cdn_policy.json
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+resource "aws_s3_bucket_acl" "aws-cloudfront-s3-static-web" {
+  depends_on = [
+    aws_s3_bucket_ownership_controls.aws-cloudfront-s3-static-web,
+    aws_s3_bucket_public_access_block.aws-cloudfront-s3-static-web,
+  ]
+
+  bucket = aws_s3_bucket.aws-cloudfront-s3-static-web.id
+  acl    = "public-read"
 }
 
 # CloudFront
@@ -48,7 +57,7 @@ resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
   }
 
   origin {
-    domain_name = aws_s3_bucket_website_configuration.aws-cloudfront-s3-static-web.website_domain
+    domain_name = aws_s3_bucket_website_configuration.aws-cloudfront-s3-static-web.website_endpoint
     origin_id   = "static_files"
 
     custom_origin_config {
