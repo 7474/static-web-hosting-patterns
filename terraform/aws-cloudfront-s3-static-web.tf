@@ -81,5 +81,5 @@ resource "aws_s3_object" "aws-cloudfront-s3-static-web" {
   key    = each.value
   source = "../contents/${each.value}"
   
-  content_type = "text.html"
+  content_type = "text/html"
 }
