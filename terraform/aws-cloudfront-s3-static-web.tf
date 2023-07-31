@@ -38,6 +38,28 @@ resource "aws_s3_bucket_acl" "aws-cloudfront-s3-static-web" {
   acl    = "public-read"
 }
 
+resource "aws_s3_bucket_policy" "aws-cloudfront-s3-static-web" {
+  bucket = aws_s3_bucket.aws-cloudfront-s3-static-web.id
+  policy = data.aws_iam_policy_document.aws-cloudfront-s3-static-web.json
+}
+
+data "aws_iam_policy_document" "aws-cloudfront-s3-static-web" {
+  statement {
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    actions = [
+      "s3:GetObject",
+    ]
+
+    resources = [
+      "${aws_s3_bucket.aws-cloudfront-s3-static-web.arn}/*",
+    ]
+  }
+}
+
 # CloudFront
 resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
   enabled             = true
