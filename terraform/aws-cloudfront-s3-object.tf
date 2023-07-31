@@ -4,11 +4,6 @@ resource "aws_s3_bucket" "aws-cloudfront-s3-object" {
   bucket = "static-web-hosting-patterns-aws-cloudfront-s3-object"
 }
 
-resource "aws_s3_bucket_acl" "aws-cloudfront-s3-object" {
-  bucket = aws_s3_bucket.aws-cloudfront-s3-object.id
-  acl    = "private"
-}
-
 data "aws_iam_policy_document" "aws-cloudfront-s3-object_cdn_policy" {
   statement {
     actions   = ["s3:GetObject"]
