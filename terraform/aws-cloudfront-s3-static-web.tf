@@ -50,9 +50,6 @@ resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
   origin {
     domain_name = aws_s3_bucket_website_configuration.aws-cloudfront-s3-static-web.website_domain
     origin_id   = "static_files"
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.aws-cloudfront-s3-static-web.cloudfront_access_identity_path
-    }
   }
 
   default_cache_behavior {
@@ -64,9 +61,6 @@ resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
 
     viewer_protocol_policy = "redirect-to-https"
   }
-}
-
-resource "aws_cloudfront_origin_access_identity" "aws-cloudfront-s3-static-web" {
 }
 
 output "aws-cloudfront-s3-static-web-domain" {
