@@ -67,10 +67,10 @@ resource "aws_cloudfront_origin_access_identity" "aws-cloudfront-s3-object" {
 }
 
 # Contents
-resource "aws_s3_object" "this" {
+resource "aws_s3_object" "aws-cloudfront-s3-objec" {
   for_each = fileset("../contents", "**/*")
 
   bucket = aws_s3_bucket.aws-cloudfront-s3-object.id
   key    = each.value
-  source = each.value
+  source = "../contents/${each.value}"
 }
