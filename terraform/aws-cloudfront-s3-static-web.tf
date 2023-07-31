@@ -51,7 +51,7 @@ resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
     domain_name = aws_s3_bucket_website_configuration.aws-cloudfront-s3-static-web.website_domain
     origin_id   = "static_files"
 
-    custom_origin_config = {
+    custom_origin_config {
       http_port              = 80
       https_port             = 443
       origin_protocol_policy = "http-only"
