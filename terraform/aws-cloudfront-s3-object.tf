@@ -1,7 +1,7 @@
 
 # S3
 resource "aws_s3_bucket" "aws-cloudfront-s3-object" {
-  bucket = "aws-cloudfront-s3-object"
+  bucket = "static-web-hosting-patterns-aws-cloudfront-s3-object"
 }
 
 resource "aws_s3_bucket_acl" "aws-cloudfront-s3-object" {
