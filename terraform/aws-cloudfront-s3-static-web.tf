@@ -63,6 +63,9 @@ resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
   }
 }
 
+resource "aws_cloudfront_origin_access_identity" "aws-cloudfront-s3-static-web" {
+}
+
 output "aws-cloudfront-s3-static-web-domain" {
   value = aws_cloudfront_distribution.aws-cloudfront-s3-static-web.domain_name
 }
