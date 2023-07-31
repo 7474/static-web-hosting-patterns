@@ -50,6 +50,13 @@ resource "aws_cloudfront_distribution" "aws-cloudfront-s3-static-web" {
   origin {
     domain_name = aws_s3_bucket_website_configuration.aws-cloudfront-s3-static-web.website_domain
     origin_id   = "static_files"
+
+    custom_origin_config = {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "http-only"
+      origin_ssl_protocols   = "TLSv1.2"
+    }
   }
 
   default_cache_behavior {
@@ -77,6 +84,6 @@ resource "aws_s3_object" "aws-cloudfront-s3-static-web" {
   bucket = aws_s3_bucket.aws-cloudfront-s3-static-web.id
   key    = each.value
   source = "../contents/${each.value}"
-  
+
   content_type = "text/html"
 }
