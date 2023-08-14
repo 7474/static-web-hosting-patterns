@@ -66,7 +66,7 @@ output "aws-cloudfront-s3-object-domain" {
 }
 
 # Contents
-resource "aws_s3_object" "aws-cloudfront-s3-objec" {
+resource "aws_s3_object" "aws-cloudfront-s3-object" {
   for_each = fileset("../contents", "**/*")
 
   bucket = aws_s3_bucket.aws-cloudfront-s3-object.id
